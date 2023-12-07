@@ -65,6 +65,8 @@ public class Song {
     }
 
     public String toString(){
-        return"Song{"+"name="+name+"/"+"Singer's name="+singerName+"/"+"region"+region+"/"+"kind"+ kind+"}";
+        return "Name -> " + name + "\n" + "   Singer's Name -> " + singerName + "\n" + "   Region -> " +
+                region +"\n" + "   Kind -> " + kind + "\n";
     }
+
 }
