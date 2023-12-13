@@ -1,16 +1,17 @@
-public class Song {
+public class Song{
     private String name;
     private String singerName;
     private String region;
-    private String kind;
-    private String changeName;
-    private String changeSingerName;
+
+    public Kind kind;
+
     public Song(){
         this.name="a name";
         this.singerName="a human";
         this.region="none";
+        this.kind = Kind.valueOf("none");
     }
-    public Song(String name,String singerName,String region,String kind){
+    public Song(String name,String singerName,String region,Kind kind){
         this.name=name;
         this.singerName=singerName;
         this.region=region;
@@ -40,28 +41,12 @@ public class Song {
     public void setRegion(String region) {
         this.region = region;
     }
-    public void setKind(String kind){
+    public void setKind(Kind kind){
         this.kind = kind;
     }
 
-    public String getKind() {
-        return kind;
-    }
-
-    public void setChangeName(String changeName) {
-        this.changeName = changeName;
-    }
-
-    public String getChangeName() {
-        return changeName;
-    }
-
-    public void setChangeSingerName(String changeSingerName) {
-        this.changeSingerName = changeSingerName;
-    }
-
-    public String getChangeSingerName() {
-        return changeSingerName;
+    public Kind getKind() {
+        return this.kind;
     }
 
     public String toString(){
