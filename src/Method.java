@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Scanner;
 
 
@@ -11,13 +12,16 @@ public class Method {
 
 
     public static List<Song> fuzzySearch(Song[] songs, String target) {
-        List<Song> result = new ArrayList<>();
+        if(!isEmpty()){
+        List<Song> result = new ArrayList<>();//Define a set
         for (int i = 0; i < total; i++) {
             if (songs[i].getName().contains(target)) {
                 result.add(songs[i]);
             }
         }
         return result;
+        }//First check if the array is empty to prevent errors caused by Method. song [I] being null
+        else return null;
     }
 
 
@@ -72,32 +76,15 @@ public class Method {
         }
     }
 
-    public void Classification() {
-        int t = 0;
-        int x = 0;
-        int r = 0;
-        Song s1 = new Song();
-        if (s1.getKind().equals("popular")) {
-            t++;
-        } else if (s1.getKind().equals("blues")) {
-            x++;
-        } else {
-            r++;
-        }
-        System.out.println(t);
-        System.out.println(x);
-        System.out.println(r);
-    }
-
-    public void deleteSongs(Song[] songs) {
-        this.songs = songs;
+    private void deleteSongs(Song[] songs) {
+        Method.songs = songs;
     }
 
     public static void Delete() {
         System.out.println("Please Choose the Song You Want to Delete");
         while (true) {
             String name = main.input.next();
-            int index = -1;
+            int index = -1;//Define initial value
             for (int i = 0; i < Method.songs.length; i++) {
                 Song s = songs[i];
                 if (s != null && s.getName().equals(name)) {
@@ -120,11 +107,11 @@ public class Method {
         if (isEmpty()) {
             return "No songs in the list";
         } else {
-            String listOfSongs = "";
+            StringBuilder listOfSongs = new StringBuilder();
             for (int i = 0; i < total; i++) {
-                listOfSongs += i + ": " + songs[i] + "\n";
+                listOfSongs.append(i).append(": ").append(songs[i]).append("\n");//Optimize memory
             }
-            return listOfSongs;
+            return String.valueOf(listOfSongs);
         }
     }
 
@@ -169,11 +156,11 @@ public class Method {
 
     private static boolean isEmpty() {
         return total == 0;
-    }
+    }//Define a method to determine whether an array is empty
 
     private static int mainMenu1() {
         System.out.println("""
-                 Mylist Menu
+                 My List Menu
                 ---------
                 1) Creat my list
                 2) List my list
@@ -181,8 +168,7 @@ public class Method {
                 4) Back
                 0) Compulsory Withdrawal
                  """);
-        int option = main.input.nextInt();
-        return option;
+        return main.input.nextInt();
 
 
     }
@@ -193,8 +179,8 @@ public class Method {
         while (option != 0) {
             switch (option) {
                 case 1 -> creatMyList();
-                case 2 -> creatMyList().listIterator();
-                case 3 -> creatMyList().clear();
+                case 2 -> Objects.requireNonNull(creatMyList()).listIterator();
+                case 3 -> Objects.requireNonNull(creatMyList()).clear();//Prevent errors caused by empty collections
                 case 4 -> {
                     main.mainMenu();
                     main.runMenu();
@@ -223,7 +209,6 @@ public class Method {
                     System.out.println("Added the Song Successfully");
                     myList.add(songs[i]);
                     System.out.println(myList);
-                    System.out.println(myList);
                     System.out.println("\nPress enter key to continue...");
                     input.nextLine();
 
@@ -236,7 +221,7 @@ public class Method {
                     return null;
 
                 }
-                mainMenu1();
+                mainMenu1();//
             }
         }
         return myList;

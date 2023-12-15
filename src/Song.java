@@ -3,7 +3,7 @@ public class Song{
     private String singerName;
     private String region;
 
-    public Kind kind;
+    private Kind kind;//Privatizing member variables to improve program security
 
     public Song(){
         this.name="a name";
@@ -52,6 +52,6 @@ public class Song{
     public String toString(){
         return "Name -> " + name + "\n" + "   Singer's Name -> " + singerName + "\n" + "   Region -> " +
                 region +"\n" + "   Kind -> " + kind + "\n";
-    }
+    }//Rewrite the toString method to print aesthetics
 
 }

@@ -1,4 +1,4 @@
-import java.nio.file.WatchEvent;
+
 import java.util.List;
 import java.util.Scanner;
 
@@ -34,8 +34,7 @@ public class Main {
                   6) Creat My List
                   0) Exit
                ==>>""");
-        int option = input.nextInt();
-        return option;
+        return input.nextInt();
     }
     protected void runMenu(){
         int option = mainMenu();
@@ -64,10 +63,11 @@ public class Main {
 
     private void printAllSongs() {
         System.out.println("List of Songs are:");
+
         System.out.println(Method.listSongs());
     }
     private void addASong(){
-        input.nextLine();  //dummy read of String to clear the buffer - bug in Scanner class.
+        input.nextLine();
 
         System.out.print("Enter the SongName:  ");
         String name = input.nextLine();
