@@ -3,15 +3,32 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Main {
+
     private Method method;
     protected Scanner input = new Scanner(System.in);
-    /////////////////////////////////////////////////////////////
 
     public static void main(String[] args) {
-        Main main = new Main();
-        main.setup();
-        main.runMenu();
-
+        String name = "MusicBox";
+        String password = "12345";
+        while (true) {
+            Scanner sc = new Scanner(System.in);
+            System.out.println("please input your Username");
+            String userName = sc.nextLine();
+            System.out.println("please input your Password");
+            String pwd = sc.nextLine();
+            if (userName.equals(name)) {
+                if (pwd.equals(password)) {
+                    System.out.println("Login successfully");
+                    Main main = new Main();
+                    main.setup();
+                    main.runMenu();
+                } else {
+                    System.out.println("Password is wrong");
+                }
+            } else {
+                System.out.println("Username does noe exit");
+            }
+        }
     }
 
     private void findASong(){
