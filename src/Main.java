@@ -31,7 +31,7 @@ public class Main {
                   3) Delete a Song
                   4) Edit a Song
                   5) List All Songs in the Music Box
-                  6) Creat My List
+                  6) My List
                   0) Exit
                ==>>""");
         int option = input.nextInt();
@@ -51,7 +51,6 @@ public class Main {
                 default -> System.out.println("Invalid option entered: " + option);
             }
             System.out.println("\nPress enter key to continue...");
-            input.nextLine();
 
             input.nextLine();
             option = mainMenu();
@@ -79,8 +78,8 @@ public class Main {
         System.out.println("""
 ------------------------------------
 Note: You can only select from the following kinds:
-Pop , Rock , Folk , Electronic , Jazz
-Absolute ,Music , Rap ,Metal , WorldMusic
+Pop , Rock , Folk , Electronic , Jazz , CountryMusic ,RB
+Absolute ,Music , Rap ,Metal , WorldMusic , AmericaSoft
                 """);
         Kind kind = Kind.valueOf(input.nextLine());
 

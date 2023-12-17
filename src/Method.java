@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Scanner;
 
 
@@ -11,50 +12,16 @@ public class Method {
 
 
     public static List<Song> fuzzySearch(Song[] songs, String target) {
-        List<Song> result = new ArrayList<>();
-        for (int i = 0; i < total; i++) {
-            if (songs[i].getName().contains(target)) {
-                result.add(songs[i]);
-            }
-        }
-        return result;
-    }
-
-
-    public Song find(String name) {
-        Song foundSong = null;
-        if(!isEmpty()) {
-            if (getNumber(name) == 1) {
-                for (int i = 0; i < total; i++) {
-                    if (Method.songs[i].getName().equals(name)) {
-                        foundSong = Method.songs[i];
-                    }
-                }
-                return foundSong;
-
-            } else if (getNumber(name) == 0)
-                return null;
-            else {
-                System.out.println("The search result is not unique，please enter a a more precise name ");
-                Scanner input = new Scanner(System.in);
-                String nameVal = input.nextLine();
-                find(nameVal);
-            }
-            return foundSong;
-        }
-        else return null;
-    }
-
-    private int getNumber(String name) {
-        int count = 0;
-        if (!Method.isEmpty()) {
-            boolean result;
+        if(!isEmpty()){
+            List<Song> result = new ArrayList<>();//Define a set
             for (int i = 0; i < total; i++) {
-                result = Method.songs[i].getName().contains(name);
-                if (result) count++;
+                if (songs[i].getName().contains(target)) {
+                    result.add(songs[i]);
+                }
             }
-        }
-        return count;
+            return result;
+        }//First check if the array is empty to prevent errors caused by Method. song [I] being null
+        else return null;
     }
 
 
@@ -67,40 +34,22 @@ public class Method {
             return false;
         } else {
             songs[total] = aSong;
-            total++;
+            total++;//Determine the number of songs
             return true;
         }
     }
 
-    public void Classification() {
-        int t = 0;
-        int x = 0;
-        int r = 0;
-        Song s1 = new Song();
-        if (s1.getKind().equals("popular")) {
-            t++;
-        } else if (s1.getKind().equals("blues")) {
-            x++;
-        } else {
-            r++;
-        }
-        System.out.println(t);
-        System.out.println(x);
-        System.out.println(r);
-    }
-
-    public void deleteSongs(Song[] songs) {
-        this.songs = songs;
+    private void deleteSongs(Song[] songs) {
+        Method.songs = songs;
     }
 
     public static void Delete() {
         System.out.println("Please Choose the Song You Want to Delete");
         while (true) {
             String name = main.input.next();
-            int index = -1;
-            for (int i = 0; i < Method.songs.length; i++) {
-                Song s = songs[i];
-                if (s != null && s.getName().equals(name)) {
+            int index = -1;//Define initial value
+            for (int i = 0; i < total; i++) {
+                if (songs[i] != null && songs[i].getName().equals(name)) {
                     index = i;
                     break;
                 }
@@ -120,11 +69,11 @@ public class Method {
         if (isEmpty()) {
             return "No songs in the list";
         } else {
-            String listOfSongs = "";
+            StringBuilder listOfSongs = new StringBuilder();
             for (int i = 0; i < total; i++) {
-                listOfSongs += i + ": " + songs[i] + "\n";
+                listOfSongs.append(i).append(": ").append(songs[i]).append("\n");//Optimize memory
             }
-            return listOfSongs;
+            return String.valueOf(listOfSongs);
         }
     }
 
@@ -133,7 +82,7 @@ public class Method {
         while (true) {
             String name = main.input.next();
             int index = -1;
-            for (int i = 0; i < Method.songs.length; i++) {
+            for (int i = 0; i < total; i++) {
                 Song s = Method.songs[i];
                 if (s != null && s.getName().equals(name)) {
                     index = i;
@@ -173,12 +122,13 @@ public class Method {
 
     private static int mainMenu1() {
         System.out.println("""
-                 Mylist Menu
+                 My list Menu
                 ---------
-                1) Creat my list
-                2) List my list
-                3) Clear my list
-                4) Back
+                1) Add Song
+                2) Top Song
+                3) Move Song Forward
+                4) Delete Song
+                5) Back
                 0) Compulsory Withdrawal
                  """);
         int option = main.input.nextInt();
@@ -189,57 +139,90 @@ public class Method {
 
     public static void myList() {
         Scanner input = new Scanner(System.in);
+        ArrayList list = new ArrayList();
         int option = mainMenu1();
         while (option != 0) {
             switch (option) {
-                case 1 -> creatMyList();
-                case 2 -> creatMyList().listIterator();
-                case 3 -> creatMyList().clear();
-                case 4 -> {
+                case 1:
+                    addSong(list);
+                    break;
+                case 2:
+                    setTop(list);
+                    break;
+                case 3:
+                    moveSong(list);
+                    break;
+                case 4:
+                    deleteSong(list);
+                    break;
+                case 5: {
                     main.mainMenu();
                     main.runMenu();
                 }
-                default -> System.out.println("Invalid option entered: " + option);
+                default: {
+                    System.out.println("Invalid option entered: " + option);
+                }
             }
             System.out.println("\nPress enter key to continue...");
             input.nextLine();
 
-            input.nextLine();
             option = mainMenu1();
         }
         System.out.println("Forcing Exit...");
         System.exit(0);
 
     }
+    public static void addSong(ArrayList list) {
+    Scanner input = new Scanner(System.in);
+        System.out.println("Please enter the song name you want to add and press Enter to end the input.");
+        String name = input.nextLine();
+        list.add(name);
+        System.out.println("Added song:" + name);
+        System.out.println("The current playlist list is:" + list);
 
-    private static ArrayList<Song> creatMyList() {
-        Scanner input = new Scanner(System.in);
-        System.out.println("Please enter your adding song");
-        String songName = input.nextLine();
-        ArrayList<Song> myList = new ArrayList<>();
-        if (!isEmpty()) {
-            for (int i = 0; i < total; i++) {
-                if (songs[i].getName().equals(songName)) {
-                    System.out.println("Added the Song Successfully");
-                    myList.add(songs[i]);
-                    System.out.println(myList);
-                    System.out.println(myList);
-                    System.out.println("\nPress enter key to continue...");
-                    input.nextLine();
-
-                    input.nextLine();
-                } else {
-                    System.out.println("""
-                            Adding the Song Failed.
-                            Please Add It to the Song Library first.
-                                    """);
-                    return null;
-
-                }
-                mainMenu1();
+    }
+        public static void deleteSong(ArrayList list){
+            System.out.println("Please enter the song name that needs to be deleted and press Enter to end the input.");
+            String name = new Scanner(System.in).nextLine();
+            int location = list.indexOf(name);
+            if (location<0){
+                System.out.println("The song you want to delete does not exist in the playlist!");
+            }else {
+                list.remove(name);
+                System.out.println("Delete successful!");
+                System.out.println("The current playlist list is:"+list);
             }
         }
-        return myList;
-    }
+        //前移歌曲
+        public static void moveSong(ArrayList list){
+            System.out.println("Please enter the name of the song you want to move forward by one digit, " +
+                    "and press Enter to end the input.");
+            String name = new Scanner(System.in).nextLine();
+            int location = list.indexOf(name);
+            if (location<0){
+                System.out.println("The song you need to move forward was not found");
+            }else if (location == 0){
+                System.out.println("Your song is already in the first position and cannot be moved forward.");
+            }else {
+                list.remove(name);
+                list.add(location-1,name);
+            }
+            System.out.println("The current playlist list is："+list);
+        }
 
+        public static void setTop(ArrayList list){
+            System.out.println("Please enter the name of the song you want to top and " +
+                    "press Enter to end the input.");
+            String name = new Scanner(System.in).nextLine();
+            int location = list.indexOf(name);//Get the current song index
+            if (location<0){//Check if there are any songs entered by the user in the playlist
+                System.out.println("I couldn't find your song!");
+            } else if (location==0) {
+                System.out.println("Your song has been topped!");
+            }else {
+                list.remove(name);//Delete the original playlist first, then insert it into the desired location
+                list.add(0,name);
+            }
+            System.out.println("The current playlist is："+list);
+        }
 }
