@@ -1,7 +1,4 @@
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Scanner;
+import java.util.*;
 
 
 public class Method {
@@ -25,42 +22,6 @@ public class Method {
     }
 
 
-    public Song find(String name) {
-        Song foundSong = null;
-        if(!isEmpty()) {
-            if (getNumber(name) == 1) {
-                for (int i = 0; i < total; i++) {
-                    if (Method.songs[i].getName().equals(name)) {
-                        foundSong = Method.songs[i];
-                    }
-                }
-                return foundSong;
-
-            } else if (getNumber(name) == 0)
-                return null;
-            else {
-                System.out.println("The search result is not unique，please enter a a more precise name ");
-                Scanner input = new Scanner(System.in);
-                String nameVal = input.nextLine();
-                find(nameVal);
-            }
-            return foundSong;
-        }
-        else return null;
-    }
-
-    private int getNumber(String name) {
-        int count = 0;
-        if (!Method.isEmpty()) {
-            boolean result;
-            for (int i = 0; i < total; i++) {
-                result = Method.songs[i].getName().contains(name);
-                if (result) count++;
-            }
-        }
-        return count;
-    }
-
 
     public Method(int numberItems) {
         songs = new Song[numberItems];
@@ -71,7 +32,7 @@ public class Method {
             return false;
         } else {
             songs[total] = aSong;
-            total++;
+            total++;//Determine array length
             return true;
         }
     }
@@ -85,9 +46,8 @@ public class Method {
         while (true) {
             String name = main.input.next();
             int index = -1;//Define initial value
-            for (int i = 0; i < Method.songs.length; i++) {
-                Song s = songs[i];
-                if (s != null && s.getName().equals(name)) {
+            for (int i = 0; i < total; i++) {
+                if (songs[i] != null && songs[i].getName().equals(name)) {
                     index = i;
                     break;
                 }
@@ -120,9 +80,8 @@ public class Method {
         while (true) {
             String name = main.input.next();
             int index = -1;
-            for (int i = 0; i < Method.songs.length; i++) {
-                Song s = Method.songs[i];
-                if (s != null && s.getName().equals(name)) {
+            for (int i = 0; i < total; i++) {
+                if (songs[i] != null && songs[i].getName().equals(name)) {
                     index = i;
                     break;
                 }
@@ -176,16 +135,19 @@ public class Method {
     public static void myList() {
         Scanner input = new Scanner(System.in);
         int option = mainMenu1();
+        ArrayList myList = new ArrayList();
         while (option != 0) {
             switch (option) {
-                case 1 -> creatMyList();
-                case 2 -> Objects.requireNonNull(creatMyList()).listIterator();
-                case 3 -> Objects.requireNonNull(creatMyList()).clear();//Prevent errors caused by empty collections
-                case 4 -> {
+                case 1-> addSong(myList);
+                case 2-> setTop(myList);
+                case 3-> moveSong(myList);
+                case 4-> deleteSong(myList);
+                case 5-> {
                     main.mainMenu();
                     main.runMenu();
                 }
-                default -> System.out.println("Invalid option entered: " + option);
+                default-> System.out.println("Invalid option entered: " + option);
+
             }
             System.out.println("\nPress enter key to continue...");
             input.nextLine();
@@ -197,34 +159,56 @@ public class Method {
         System.exit(0);
 
     }
-
-    private static ArrayList<Song> creatMyList() {
+    public static void addSong(ArrayList myList) {
         Scanner input = new Scanner(System.in);
-        System.out.println("Please enter your adding song");
+        System.out.println("Please enter the song name you want to add and press Enter to end the input.");
         String songName = input.nextLine();
-        ArrayList<Song> myList = new ArrayList<>();
-        if (!isEmpty()) {
-            for (int i = 0; i < total; i++) {
-                if (songs[i].getName().equals(songName)) {
-                    System.out.println("Added the Song Successfully");
-                    myList.add(songs[i]);
-                    System.out.println(myList);
-                    System.out.println("\nPress enter key to continue...");
-                    input.nextLine();
-
-                    input.nextLine();
-                } else {
-                    System.out.println("""
-                            Adding the Song Failed.
-                            Please Add It to the Song Library first.
-                                    """);
-                    return null;
-
-                }
-                mainMenu1();//
-            }
-        }
-        return myList;
+        myList.add(songName);
+        System.out.println("Added song:" + songName);
+        System.out.println("The current playlist list is:" + myList);
     }
 
+        public static void deleteSong(ArrayList myList){
+            System.out.println("Please enter the song name that needs to be deleted and press Enter to end the input.");
+            String songName = new Scanner(System.in).nextLine();
+            int location = myList.indexOf(songName);
+            if (location<0){
+                System.out.println("The song you want to delete does not exist in the playlist!");
+            }else {
+                myList.remove(songName);
+                System.out.println("Delete successful!");
+                System.out.println("The current playlist list is:"+myList);
+            }
+        }
+        public static void moveSong(ArrayList myList){
+            System.out.println("Please enter the name of the song you want to move forward by one digit, " +
+                    "and press Enter to end the input.");
+            String name = new Scanner(System.in).nextLine();
+            int location = myList.indexOf(name);
+            if (location<0){
+                System.out.println("The song you need to move forward was not found");
+            }else if (location == 0){
+                System.out.println("Your song is already in the first position and cannot be moved forward.");
+            }else {
+                myList.remove(name);
+                myList.add(location-1,name);
+            }
+            System.out.println("The current playlist list is："+ myList);
+        }
+
+        public static void setTop(ArrayList myList){
+            System.out.println("Please enter the name of the song you want to top and " +
+                    "press Enter to end the input.");
+            String songName = new Scanner(System.in).nextLine();
+            int location = myList.indexOf(songName);//Get the current song index
+            if (location<0){//Check if there are any songs entered by the user in the playlist
+                System.out.println("I couldn't find your song!");
+            } else if (location==0) {
+                System.out.println("Your song has been topped!");
+            }else {
+                myList.remove(songName);//Delete the original playlist first, then insert it into the desired location
+                myList.add(0,songName);
+            }
+            System.out.println("The current playlist is："+myList);
+        }
 }

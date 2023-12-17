@@ -31,13 +31,13 @@ public class Main {
         }
     }
 
+
     private void findASong(){
         input.nextLine();
         System.out.println("Which song you want to find:");
         String songName = input.nextLine();
         List<Song> result = method.fuzzySearch(method.songs, songName);
         System.out.println(result);
-        ;
     }
     protected int mainMenu(){
         System.out.print("""
