@@ -96,8 +96,8 @@ public class Main {
         System.out.println("""
 ------------------------------------
 Note: You can only select from the following kinds:
-Pop , Rock , Folk , Electronic , Jazz
-Absolute ,Music , Rap ,Metal , WorldMusic
+Pop , Rock , Folk , Electronic , Jazz ,CountryMusic , RB
+Absolute ,Music , Rap ,Metal , WorldMusic , AmericaSoft
                 """);
         Kind kind = Kind.valueOf(input.nextLine());
 

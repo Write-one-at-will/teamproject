@@ -121,10 +121,11 @@ public class Method {
         System.out.println("""
                  My List Menu
                 ---------
-                1) Creat my list
-                2) List my list
-                3) Clear my list
-                4) Back
+                1) Add Song
+                2) Top Song
+                3) Move Song
+                4）Delete Song
+                5) Back
                 0) Compulsory Withdrawal
                  """);
         return main.input.nextInt();
